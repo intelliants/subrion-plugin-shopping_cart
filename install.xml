@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugin name="shopping_cart">
+	<title>Shopping Cart</title>
+	<summary>Adds Shopping Cart functionality to manage products and sell them.</summary>
+	<author>Intelliants LLC</author>
+	<contributor>Intelliants LLC</contributor>
+	<version>3.2.0</version>
+	<date>2014-12-09</date>
+	<compatibility>3.2</compatibility>
+
+	<actions>
+		<action name="cart_categs" url="shopping-cart/categories/" icon="list-2" order="1" pages="cart_items">Cart Categories</action>
+		<action name="cart_items" url="shopping-cart/items/" icon="list" order="2" pages="cart_categs">Cart Items</action>
+		<action name="cart_categ_add" url="shopping-cart/categories/add/" icon="folder-plus" order="3" pages="cart_categs">Add Category</action>
+		<action name="cart_item_add" url="shopping-cart/items/add/" icon="plus-alt" order="3" pages="cart_items">Add Item</action>
+	</actions>
+
+	<adminpages>
+		<page group="content" menus="menu" order="105">Shopping Cart</page>
+
+		<page name="cart_categs" group="content" url="shopping-cart/categories/" filename="categories" menus="menu" order="115">Categories</page>
+		<page name="cart_items" group="content" url="shopping-cart/items/" filename="items" menus="menu" order="120">Items</page>
+	</adminpages>
+
+	<pages>
+		<page name="shopping_cart" url="order/" menus="inventory" order="2">Order</page>
+	</pages>
+
+	<phrases>shopping_cart
+		<phrase category="admin" key="shopping_cart">Shopping Cart</phrase>
+		<phrase category="admin" key="cart_categs">Cart categories</phrase>
+		<phrase category="admin" key="cart_categ_add">Add category</phrase>
+		<phrase category="admin" key="cart_categ_edit">Edit category</phrase>
+		<phrase category="admin" key="cart_incorrect_categ">Category is not selected.</phrase>
+		<phrase category="admin" key="cart_item_add">Add item</phrase>
+		<phrase category="admin" key="cart_item_edit">Edit item</phrase>
+		<phrase category="admin" key="cart_items">Cart items</phrase>
+		<phrase category="admin" key="cart_item_added">Cart item is added.</phrase>
+		<phrase category="admin" key="cart_item_deleted">Cart item is removed.</phrase>
+		<phrase category="admin" key="cart_items_deleted">Cart items are removed.</phrase>
+		<phrase category="admin" key="cart_categ_added">Cart category is added.</phrase>
+		<phrase category="admin" key="cart_categ_deleted">Cart category is removed.</phrase>
+		<phrase category="admin" key="cart_categs_deleted">Cart categories are removed.</phrase>
+		<phrase category="admin" key="error_cart_item_cost">Wrong cost number.</phrase>
+		<phrase category="admin" key="error_cart_item_number_days">Wrong days number.</phrase>
+		<phrase category="admin" key="wrong_categ">Wrong Category selected.</phrase>
+		<phrase category="admin" key="cart_are_you_sure_to_delete_selected_categ">Are you sure to delete selected category?</phrase>
+		<phrase category="admin" key="cart_are_you_sure_to_delete_selected_categs">Are you sure to delete selected categories?</phrase>
+
+		<phrase category="frontend" key="no_items">No items</phrase>
+		<phrase category="frontend" key="checkout">Checkout</phrase>
+		<phrase category="frontend" key="none">None</phrase>
+		<phrase category="frontend" key="price">Price</phrase>
+		<phrase category="frontend" key="product">Product</phrase>
+		<phrase category="frontend" key="products_in_cart">Products in cart</phrase>
+
+		<phrase category="common" key="cart_purchase">Cart purchase</phrase>
+	</phrases>
+
+	<install>
+		<sql>
+			<![CDATA[
+CREATE TABLE `{prefix}cart_categs`(
+	`id` smallint(4) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`order` int(4) NOT NULL
+) {mysql_version};
+			]]>
+		</sql>
+		<sql>
+			<![CDATA[
+CREATE TABLE `{prefix}cart_items`(
+	`id` int(4) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`cid` smallint(4) unsigned NOT NULL,
+	`days` int(6) unsigned NOT NULL,
+	`cost` decimal(8,2) unsigned NOT NULL,
+	`order` int(4) NOT NULL,
+	`status` enum('active', 'inactive') NOT NULL default 'active'
+) {mysql_version};
+			]]>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<![CDATA[
+DROP TABLE `{prefix}cart_categs`, `{prefix}cart_items`;
+			]]>
+		</sql>
+	</uninstall>
+</plugin>
