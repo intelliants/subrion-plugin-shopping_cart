@@ -41,7 +41,6 @@
 		<phrase category="admin" key="cart_categ_added">Cart category is added.</phrase>
 		<phrase category="admin" key="cart_categ_deleted">Cart category is removed.</phrase>
 		<phrase category="admin" key="cart_categs_deleted">Cart categories are removed.</phrase>
-		<phrase category="admin" key="error_cart_item_cost">Wrong cost number.</phrase>
 		<phrase category="admin" key="error_cart_item_number_days">Wrong days number.</phrase>
 		<phrase category="admin" key="wrong_categ">Wrong Category selected.</phrase>
 		<phrase category="admin" key="cart_are_you_sure_to_delete_selected_categ">Are you sure to delete selected category?</phrase>
@@ -71,6 +70,7 @@ CREATE TABLE `{prefix}cart_categs`(
 CREATE TABLE `{prefix}cart_items`(
 	`id` int(4) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`cid` smallint(4) unsigned NOT NULL,
+	`image` tinytext NOT NULL,
 	`days` int(6) unsigned NOT NULL,
 	`cost` decimal(8,2) unsigned NOT NULL,
 	`order` int(4) NOT NULL,

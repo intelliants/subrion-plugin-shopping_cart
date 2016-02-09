@@ -22,7 +22,8 @@
 								{foreach $categ.items as $id => $item}
 									<div class="cart-categ__items__item">
 										<label class="radio">
-											<input type="radio" class="js-cart-item" id="cart-item-{$id}" name="cart_items[{$cid}]" value="{$id}" data-cost="{$item.cost}" data-categ="{$cid}"> 
+											<input type="radio" class="js-cart-item" id="cart-item-{$id}" name="cart_items[{$cid}]" value="{$id}" data-cost="{$item.cost}" data-categ="{$cid}">
+											<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image}</a>
 											{lang key="cart_item_title_{$id}"} &mdash; <span class="price">{$item.cost} {$core.config.currency}</span>
 										</label>
 										<p>{lang key="cart_item_description_{$id}"}</p>

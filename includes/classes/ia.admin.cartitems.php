@@ -12,7 +12,7 @@ class iaCartItems extends abstractPlugin
 		$this->iaDb->setTable(self::getTable());
 
 		// if item exists, then remove it
-		if ($row = $this->iaDb->row_bind(array('title', 'image'), '`id` = :id', array('id' => $id)))
+		if ($row = $this->iaDb->row_bind(array('image'), '`id` = :id', array('id' => $id)))
 		{
 			$result = (bool)$this->iaDb->delete(iaDb::convertIds($id), self::getTable());
 
@@ -24,6 +24,8 @@ class iaCartItems extends abstractPlugin
 
 			if ($result)
 			{
+				iaLanguage::delete('cart_item_title_' . $id);
+				iaLanguage::delete('cart_item_description_' . $id);
 				$this->iaCore->factory('log')->write(iaLog::ACTION_DELETE, array('module' => 'blog', 'item' => 'blog', 'name' => $row['title'], 'id' => (int)$id));
 			}
 		}

@@ -48,7 +48,7 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 
 		$title = implode(', ', $title);
 
-		$paymentId = $iaTransaction->createInvoice($title, $_POST['total'], 'cart_purchase', array(), IA_URL . 'order/', 0, true);
+		$paymentId = $iaTransaction->create($title, $_POST['total'], 'cart_purchase', array(), IA_URL . 'order/', 0, true);
 
 		iaUtil::go_to(IA_URL . 'pay' . IA_URL_DELIMITER . $paymentId . IA_URL_DELIMITER);
 	}

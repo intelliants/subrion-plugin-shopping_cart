@@ -47,26 +47,26 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 			$lang['title'] = $_POST['title'];
 			$lang['description'] = $_POST['description'];
 
-			foreach($iaCore->languages as $categ_language => $categ_language_title)
+			foreach($iaCore->languages as $code => $language)
 			{
-				if (isset($lang['title'][$categ_language]))
+				if (isset($lang['title'][$code]))
 				{
-					if (empty($lang['title'][$categ_language]))
+					if (empty($lang['title'][$code]))
 					{
 						$error = true;
-						$messages[] = iaLanguage::getf('error_lang_title', array('lang' => $categ_language_title));
+						$messages[] = iaLanguage::getf('error_lang_title', array('lang' => $language['title']));
 					}
-					elseif (!utf8_is_valid($lang['title'][$categ_language]))
+					elseif (!utf8_is_valid($lang['title'][$code]))
 					{
-						$lang['title'][$categ_language] = utf8_bad_replace($lang['title'][$categ_language]);
+						$lang['title'][$code] = utf8_bad_replace($lang['title'][$code]);
 					}
 				}
 
-				if (isset($lang['description'][$categ_language]))
+				if (isset($lang['description'][$code]))
 				{
-					if (!utf8_is_valid($lang['description'][$categ_language]))
+					if (!utf8_is_valid($lang['description'][$code]))
 					{
-						$lang['description'][$categ_language] = utf8_bad_replace($lang['description'][$categ_language]);
+						$lang['description'][$code] = utf8_bad_replace($lang['description'][$code]);
 					}
 				}
 			}

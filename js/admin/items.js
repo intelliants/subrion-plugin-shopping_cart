@@ -6,18 +6,14 @@ Ext.onReady(function()
 		{
 			columns: [
 				'selection',
-				{name: 'title', title: _t('title'), width: 1},
-				{name: 'description', title: _t('description'), width: 2},
+				{name: 'title', title: _t('title'), width: 1, sortable: false},
+				{name: 'description', title: _t('description'), width: 2, sortable: false},
 				{name: 'cost', title: _t('cost'), width: 70},
 				'status',
 				'update',
 				'delete'
 			],
-			url: intelli.config.admin_url + '/shopping-cart/items/',
-			texts: {
-				delete_multiple: _t('are_you_sure_to_delete_selected_categs'),
-				delete_single: _t('are_you_sure_to_delete_selected_categ')
-			}
+			url: intelli.config.admin_url + '/shopping-cart/items/'
 		}, false);
 
 		intelli.cart_items.init();

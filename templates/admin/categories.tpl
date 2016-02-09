@@ -6,25 +6,33 @@
 				<div class="wrap-group-heading">
 					<h4>{lang key='general'}</h4>
 				</div>
-				{foreach $core.languages as $code => $language}
-					<div id="categories-data-{$code}" class="wrap-row">
-						<div class="row">
-							<label class="col col-lg-2 control-label">{lang key='title'} <span class="label label-info">{$language.title}</span></label>
 
-							<div class="col col-lg-4">
-								<input type="text" name="title[{$code}]" value="{if isset($category.title) && is_array($category.title)}{if isset($category.title.$code)}{$category.title.$code|escape:'html'}{elseif isset($smarty.post.title.$code)}{$smarty.post.title.$code|escape:'html'}{/if}{/if}">
+				<div class="row">
+					<ul class="nav nav-tabs">
+						{foreach $core.languages as $code => $language}
+							<li{if $language@iteration == 1} class="active"{/if}><a href="#tab-language-{$code}" data-toggle="tab" data-language="{$code}">{$language.title}</a></li>
+						{/foreach}
+					</ul>
+
+					<div class="tab-content">
+						{foreach $core.languages as $code => $language}
+							<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
+								<div class="row">
+									<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
+									<div class="col col-lg-6">
+										<input type="text" name="title[{$code}]" value="{if isset($category.title.$code)}{$category.title.$code|escape:'html'}{/if}">
+									</div>
+								</div>
+								<div class="row js-local-url-field">
+									<label class="col col-lg-2 control-label">{lang key='description'}</label>
+									<div class="col col-lg-6">
+										<textarea rows="8" class="resizable" name="description[{$code}]">{if isset($category.description.$code)}{$category.description.$code|escape:'html'}{/if}</textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-
-						<div class="row">
-							<label class="col col-lg-2 control-label">{lang key='description'} <span class="label label-info">{$language.title}</span></label>
-
-							<div class="col col-lg-8">
-								<textarea name="description[{$code}]" rows="8" class="resizable">{if isset($category.description) && is_array($category.description)}{if isset($category.description.$code)}{$category.description.$code|escape:'html'}{elseif isset($smarty.post.description.$code)}{$smarty.post.description.$code|escape:'html'}{/if}{/if}</textarea>
-							</div>
-						</div>
+						{/foreach}
 					</div>
-				{/foreach}
+				</div>
 			</div>
 		</div>
 		<div class="form-actions inline">

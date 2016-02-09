@@ -1,186 +1,149 @@
 <?php
 //##copyright##
 
-$iaCartItems = $iaCore->factoryPlugin(IA_CURRENT_PLUGIN, iaCore::ADMIN, 'cartitems');
-$iaDb->setTable(iaCartItems::getTable());
-
-if (iaView::REQUEST_JSON == $iaView->getRequestType())
+class iaBackendController extends iaAbstractControllerPluginBackend
 {
-	switch ($pageAction)
-	{
-		case iaCore::ACTION_READ:
-			$params = array();
+	protected $_name = 'shopping-cart/items';
 
-			$output = $iaCartItems->gridRead($_GET,
-				array('id', 'order', 'cost', 'days', 'status'),
-				array('status' => 'equal'),
-				$params
+	protected $_table = 'cart_items';
+	protected $_tableCategories = 'cart_categs';
+
+	protected $_helperName = 'cartitems';
+
+	protected $_pluginName = 'shopping_cart';
+
+	protected $_phraseAddSuccess = 'cart_item_added';
+	protected $_phraseGridEntryDeleted = 'cart_item_deleted';
+	protected $_phraseGridEntriesDeleted = 'cart_items_deleted';
+
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->_template = 'items';
+
+		$iaCart = $this->_iaCore->factoryPlugin($this->getPluginName(), iaCore::ADMIN, $this->_helperName);
+		$this->setHelper($iaCart);
+	}
+
+	protected function _indexPage(&$iaView)
+	{
+		$iaView->grid('_IA_URL_plugins/' . $this->getPluginName() . '/js/admin/items');
+	}
+
+	protected function _setPageTitle(&$iaView)
+	{
+		if (in_array($iaView->get('action'), array(iaCore::ACTION_ADD, iaCore::ACTION_EDIT)))
+		{
+			$iaView->title(iaLanguage::get('cart_item_' . $iaView->get('action')));
+		}
+	}
+
+	protected function _assignValues(&$iaView, array &$entryData)
+	{
+		$categs = $this->_iaDb->onefield('id', '', 0, 0, 'cart_categs');
+		$categs || $iaView->setMessages(iaLanguage::get('cart_error_no_categs'));
+		$iaView->assign('categs', $categs);
+
+		$id = $this->getEntryId();
+		$entryData['title'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$id}'", 'language');
+		$entryData['description'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$id}'", 'language');
+	}
+
+	protected function _entryDelete($entryId)
+	{
+		return (bool)$this->getHelper()->delete($entryId);
+	}
+
+	protected function _preSaveEntry(array &$entry, array $data, $action)
+	{
+		if (empty($data['cid']))
+		{
+			$this->addMessage('cart_incorrect_categ');
+		}
+		$entry['cid'] = $data['cid'];
+
+		iaUtil::loadUTF8Functions('ascii', 'validation', 'bad', 'utf8_to_ascii');
+
+		$lang = array();
+		$lang['title'] = $data['title'];
+		$lang['description'] = $data['description'];
+
+		foreach($this->_iaCore->languages as $code => $language)
+		{
+			if (empty($lang['title'][$code]))
+			{
+				$this->addMessage(iaLanguage::getf('error_lang_title', array('lang' => $language['title'])), false);
+			}
+			elseif (!utf8_is_valid($lang['title'][$code]))
+			{
+				$lang['title'][$code] = utf8_bad_replace($lang['title'][$code]);
+			}
+
+			if ($lang['description'][$code]  && !utf8_is_valid($lang['description'][$code]))
+			{
+				$lang['description'][$code] = utf8_bad_replace($lang['description'][$code]);
+			}
+		}
+
+		if ($this->getMessages())
+		{
+			return false;
+		}
+
+		$entry['cost'] = preg_replace('/\D/', '', $data['cost']);
+		$entry['status'] = $data['status'];
+
+		if (isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name'])
+		{
+			$iaPicture = $this->_iaCore->factory('picture');
+
+			$info = array(
+				'image_width' => 1000,
+				'image_height' => 750,
+				'thumb_width' => 250,
+				'thumb_height' => 250,
+				'resize_mode' => iaPicture::CROP
 			);
 
-		break;
-
-		case iaCore::ACTION_EDIT:
-			$output = $iaCartItems->gridUpdate($_POST);
-
-		break;
-
-		case iaCore::ACTION_DELETE:
-			$output = $iaCartItems->gridDelete($_POST);
-	}
-
-	$iaView->assign($output);
-}
-
-if (iaView::REQUEST_HTML == $iaView->getRequestType())
-{
-	$iaView->title(iaLanguage::get('cart_items'));
-
-	$categs = $iaDb->onefield('id', '', 0, 0, 'cart_categs');
-
-	if (iaCore::ACTION_READ == $pageAction)
-	{
-		$iaView->grid();
-	}
-	else
-	{
-		if (isset($_POST['save']))
-		{
-			$error = false;
-			$messages = array();
-			$data = array();
-
-			if (empty($_POST['cid']))
+			if ($image = $iaPicture->processImage($_FILES['image'], iaUtil::getAccountDir(), iaUtil::generateToken(), $info))
 			{
-				$error = true;
-				$messages[] = iaLanguage::get('cart_incorrect_categ');
+				empty($entry['image']) || $iaPicture->delete($entry['image']); // already has an assigned image
+				$entry['image'] = $image;
 			}
-			else
-			{
-				$data['cid'] = in_array($_POST['cid'], $categs) ? $_POST['cid'] : false;
-
-				iaUtil::loadUTF8Functions('ascii', 'validation', 'bad', 'utf8_to_ascii');
-
-				$lang = array();
-				$lang['title'] = $_POST['title'];
-				$lang['description'] = $_POST['description'];
-
-				foreach($iaCore->languages as $citem_language => $citem_language_title)
-				{
-					if (isset($lang['title'][$citem_language]))
-					{
-						if (empty($lang['title'][$citem_language]))
-						{
-							$error = true;
-							$messages[] = iaLanguage::getf('error_lang_title', array('lang' => $citem_language_title));
-						}
-						elseif (!utf8_is_valid($lang['title'][$citem_language]))
-						{
-							$lang['title'][$citem_language] = utf8_bad_replace($lang['title'][$citem_language]);
-						}
-					}
-
-					if (isset($lang['description'][$citem_language]))
-					{
-						if (!utf8_is_valid($lang['description'][$citem_language]))
-						{
-							$lang['description'][$citem_language] = utf8_bad_replace($lang['description'][$citem_language]);
-						}
-					}
-				}
-
-				$data['cost'] = (isset($_POST['cost']) && !empty($_POST['cost'])) ? $_POST['cost'] : '0';
-				if (!preg_match('/^[0-9\.]+$/', $data['cost']))
-				{
-					$error = true;
-					$messages[] = iaLanguage::get('error_cart_item_cost');
-				}
-				$data['status'] = $_POST['status'];
-
-				if (!$error)
-				{
-					if (isset($data['data']) && is_array($data['data']))
-					{
-						$data['data'] = serialize($data['data']);
-					}
-
-					if (iaCore::ACTION_ADD == $pageAction)
-					{
-						$citem_id = $iaDb->insert($data);
-
-						if ($citem_id)
-						{
-							$messages[] = iaLanguage::get('cart_item_added');
-						}
-						else
-						{
-							$error = true;
-							$messages[] = iaLanguage::get('unknown_error');
-						}
-					}
-					elseif (iaCore::ACTION_EDIT == $pageAction)
-					{
-						$citem_id = $iaCore->requestPath[0];
-						$result = $iaDb->update($data, iaDb::convertIds($citem_id));
-
-						if ($result !== false)
-						{
-							$messages[] = iaLanguage::get('saved');
-						}
-						else
-						{
-							$error = true;
-							$messages[] = iaLanguage::get('unknown_error');
-						}
-					}
-
-					foreach ($iaCore->languages as $code => $title)
-					{
-						iaLanguage::addPhrase('cart_item_title_' . $citem_id, $lang['title'][$code], $code, IA_CURRENT_PLUGIN);
-						iaLanguage::addPhrase('cart_item_description_' . $citem_id, $lang['description'][$code], $code, IA_CURRENT_PLUGIN);
-					}
-
-					$iaView->setMessages($messages, ($error ? 'error' : 'success'));
-					iaUtil::go_to(IA_ADMIN_URL . 'shopping-cart/items/');
-				}
-			}
-
-			$iaView->setMessages($messages, $error ? iaView::ERROR : iaView::SUCCESS);
 		}
 
-		if (iaCore::ACTION_EDIT == $pageAction)
-		{
-			$citem_id = empty($iaCore->requestPath[0]) ? false : (int)$iaCore->requestPath[0];
-			$citem = $citem_id ? $iaDb->row(iaDb::ALL_COLUMNS_SELECTION, "`id`='{$citem_id}'", 'cart_items') : false;
-		}
-
-		$titles = $description = '';
-
-		if (isset($citem_id) && $citem_id)
-		{
-			$citem['title'] = isset($citem_id)
-				? $iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$citem_id}'", 'language')
-				: false;
-			$citem['description'] = isset($citem_id)
-				? $iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$citem_id}'", 'language')
-				: false;
-		}
-
-		if (isset($citem['data']))
-		{
-			$citem['data'] = unserialize($citem['data']);
-		}
-		else
-		{
-			$citem['data'] = array();
-		}
-
-		$iaView->assign('citem', $citem);
+		return true;
 	}
 
-	$iaView->assign('categs', $categs);
+	protected function _postSaveEntry(array &$entry, array $data, $action)
+	{
+		$id = $this->getEntryId();
+		foreach ($this->_iaCore->languages as $code => $title)
+		{
+			iaLanguage::addPhrase('cart_item_title_' . $id, $data['title'][$code], $code, $this->getPluginName());
+			iaLanguage::addPhrase('cart_item_description_' . $id, $data['description'][$code], $code, $this->getPluginName());
+		}
+	}
 
-	$iaView->display('items');
+	protected function _gridQuery($columns, $where, $order, $start, $limit)
+	{
+		return parent::_gridQuery(array('id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1), $where, $order, $start, $limit);
+	}
+
+	protected function _modifyGridResult(array &$entries)
+	{
+		$currentLanguage = $this->_iaCore->iaView->language;
+
+		$this->_iaDb->setTable(iaLanguage::getTable());
+		$titles = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_title_%') AND `code` = '$currentLanguage'");
+		$descriptions = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_description_%') AND `code` = '$currentLanguage'");
+		$this->_iaDb->resetTable();
+
+		foreach ($entries as &$entry)
+		{
+			$entry['title'] = isset($titles["cart_item_title_{$entry['id']}"]) ? $titles["cart_item_title_{$entry['id']}"] : iaLanguage::get('empty');
+			$entry['description'] = isset($descriptions["cart_item_description_{$entry['id']}"]) ? $descriptions["cart_item_description_{$entry['id']}"] : iaLanguage::get('empty');
+		}
+	}
 }
-
-$iaView->name('cart_items');
-$iaDb->resetTable();
