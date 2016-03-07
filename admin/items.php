@@ -46,8 +46,8 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		$iaView->assign('categs', $categs);
 
 		$id = $this->getEntryId();
-		$entryData['title'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$id}'", 'language');
-		$entryData['description'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$id}'", 'language');
+		$entryData['title'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$id}'", iaLanguage::getTable());
+		$entryData['description'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$id}'", iaLanguage::getTable());
 	}
 
 	protected function _entryDelete($entryId)

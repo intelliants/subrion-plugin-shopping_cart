@@ -44,12 +44,14 @@
 				</div>
 			</div>
 
+			{*
 			<div class="row">
 				<label class="col col-lg-2 control-label" for="input-days">{lang key='days'}</label>
 				<div class="col col-lg-4">
 					<input type="text" name="days" id="input-days" value="{if isset($item.days)}{$item.days}{elseif isset($smarty.post.days)}{$smarty.post.days}{/if}">
 				</div>
 			</div>
+			*}
 
 			<div class="row">
 				<label class="col col-lg-2 control-label">{lang key='status'}</label>
