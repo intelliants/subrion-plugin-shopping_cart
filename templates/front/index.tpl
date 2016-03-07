@@ -3,7 +3,10 @@
 		<div class="cart">
 			{foreach $all_items as $cid => $categ}
 				<div class="cart-categ">
-					<div class="cart-categ__heading">
+					<div class="cart-categ__heading clearfix">
+						{if $categ.image}
+							<div class="cart-categ__image">{printImage imgfile=$categ.image class='img-responsive'}</div>
+						{/if}
 						<h3>{lang key="cart_categ_title_{$cid}"}</h3>
 						<p>{lang key="cart_categ_description_{$cid}"}</p>
 					</div>
@@ -13,22 +16,37 @@
 							<div class="alert alert-info">No products in this category.</div>
 						{else}
 							<div class="cart-categ__items">
-								<div class="cart-categ__items__item">
-									<label class="radio">
-										<input type="radio" class="js-cart-item" name="cart_items[{$cid}]" id="cart-item-0" value="0" data-cost="0" data-categ="{$cid}" checked="checked"> {lang key='none'}
-									</label>
+								<div class="row">
+									{foreach $categ.items as $id => $item}
+										<div class="col-md-4">
+											<div class="cart-categ__items__item">
+												{if $item.image}
+													<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='img-responsive'}</a>
+												{/if}
+												<h4>{lang key="cart_item_title_{$id}"}</h4>
+												<p class="price"><span class="fa fa-tag"></span> {$item.cost} {$core.config.currency}</p>
+												<p>{lang key="cart_item_description_{$id}"}</p>
+
+												<label class="cart-btn-buy">
+													<input type="radio" class="js-cart-item" id="cart-item-{$id}" name="cart_items[{$cid}]" value="{$id}" data-cost="{$item.cost}" data-categ="{$cid}"><span>{lang key='buy_this_item'}</span>
+												</label>
+											</div>
+										</div>
+
+										{if $item@iteration % 3 == 0 && !$item@last}
+											</div>
+											<div class="row">
+										{/if}
+									{/foreach}
 								</div>
-								
-								{foreach $categ.items as $id => $item}
-									<div class="cart-categ__items__item">
-										<label class="radio">
-											<input type="radio" class="js-cart-item" id="cart-item-{$id}" name="cart_items[{$cid}]" value="{$id}" data-cost="{$item.cost}" data-categ="{$cid}">
-											<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image}</a>
-											{lang key="cart_item_title_{$id}"} &mdash; <span class="price">{$item.cost} {$core.config.currency}</span>
+
+								<div class="cart-categ__items__uncheck clearfix">
+									<div class="radio">
+										<label>
+											<input type="radio" class="js-cart-item" name="cart_items[{$cid}]" id="cart-item-0" value="0" data-cost="0" data-categ="{$cid}" checked="checked"> {lang key='uncheck_items'}
 										</label>
-										<p>{lang key="cart_item_description_{$id}"}</p>
 									</div>
-								{/foreach}
+								</div>
 							</div>
 						{/if}
 					</div>

@@ -52,6 +52,8 @@
 		<phrase category="frontend" key="price">Price</phrase>
 		<phrase category="frontend" key="product">Product</phrase>
 		<phrase category="frontend" key="products_in_cart">Products in cart</phrase>
+		<phrase category="frontend" key="uncheck_items">Uncheck items</phrase>
+		<phrase category="frontend" key="buy_this_item">Buy this item</phrase>
 
 		<phrase category="common" key="cart_purchase">Cart purchase</phrase>
 	</phrases>

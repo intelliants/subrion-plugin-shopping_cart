@@ -1,3 +1,5 @@
+/* CATEGORIES */
+
 .cart-categ {
 	min-height: 100px;
 }
@@ -6,8 +8,22 @@
 	margin-bottom: 30px;
 }
 
+.cart-categ__image {
+	float: left;
+	margin-right: 20px;
+	max-width: 80px;
+}
+
+.cart-categ__image img {
+	border-radius: 6px;
+}
+
 .cart-categ__heading {
 	margin-bottom: 10px;
+	overflow: hidden;
+	background: #f2f2f2;
+	padding: 10px;
+	border-radius: 6px;
 }
 
 .cart-categ__heading h3 {
@@ -21,7 +37,87 @@
 	color: #999;
 }
 
+/* CONTENT */
 
+.cart-categ__content {
+	padding: 10px 20px;
+}
+
+
+.cart-categ__items__item {
+	margin-bottom: 10px;
+	padding: 15px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+}
+
+.cart-categ__items__uncheck .radio {
+	float: right;
+}
+
+.price {
+	color: #3BB73F;
+	font-weight: bold;
+}
+
+.cart-categ__items__item label {
+	font-weight: bold;
+	margin: 0;
+}
+
+.cart-categ__items__item p {
+	margin: 0;
+}
+
+.cart-categ__items__item label + p {
+	margin-top: 10px;
+}
+
+.cart-btn-buy {
+	position: relative;
+	overflow: hidden;
+	margin: 15px 0 0 !important;
+	display: block;
+}
+
+.cart-btn-buy input {
+	margin: 0;
+	position: absolute;
+	left: -50px;
+	top: -50px;
+	opacity: 0;
+}
+
+.cart-btn-buy span {
+	display: block;
+	font-weight: normal;
+	text-align: center;
+	padding: 4px 6px;
+	background: #f0f0f0;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.cart-btn-buy input:checked + span {
+	color: #fff;
+	background: #3BB73F;
+	border-color: #2F9032;
+}
+
+.cart-btn-buy input:checked + span::before {
+	display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	content: "\f00c\00a0";
+}
+
+
+
+/* SUM */
 .cart-sum {
 	border-top: 1px solid #ddd;
 	background: #f2f2f2;
@@ -42,28 +138,4 @@
 	font-weight: bold;
 	margin-right: 20px;
 	color: #00bff3;
-}
-
-.cart-categ__items__item {
-	margin-bottom: 10px;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
-.price {
-	color: #00bff3;
-}
-
-.cart-categ__items__item label {
-	font-weight: bold;
-	margin: 0;
-}
-
-.cart-categ__items__item p {
-	margin: 0;
-}
-
-.cart-categ__items__item label + p {
-	margin-top: 10px;	
 }
