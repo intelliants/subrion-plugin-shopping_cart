@@ -18,18 +18,56 @@
 							<div class="cart-categ__items">
 								<div class="row">
 									{foreach $categ.items as $id => $item}
+										{assign var='description' value="{lang key="cart_item_description_{$id}"}"}
+
 										<div class="col-md-4">
 											<div class="cart-categ__items__item">
 												{if $item.image}
-													<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='img-responsive'}</a>
+													<a href="#" data-toggle="modal" data-target="#modal_{$id}">
+														{printImage imgfile=$item.image class='img-responsive'}
+													</a>
 												{/if}
 												<h4>{lang key="cart_item_title_{$id}"}</h4>
 												<p class="price"><span class="fa fa-tag"></span> {$item.cost} {$core.config.currency}</p>
-												<p>{lang key="cart_item_description_{$id}"}</p>
+
+												{if $core.config.shopping_cart_popup}
+													<p>{$description|strip_tags|truncate:150:'...':true}</p>
+												{else}
+													<p>{$description}</p>
+												{/if}
 
 												<label class="cart-btn-buy">
 													<input type="radio" class="js-cart-item" id="cart-item-{$id}" name="cart_items[{$cid}]" value="{$id}" data-cost="{$item.cost}" data-categ="{$cid}"><span>{lang key='buy_this_item'}</span>
 												</label>
+
+												{if $core.config.shopping_cart_popup}
+													<button type="button" class="btn btn-primary cart-more-info" data-toggle="modal" data-target="#modal_{$id}">{lang key='more'}</button>
+
+													<!-- Modal -->
+													<div class="modal fade" id="modal_{$id}" tabindex="-1" role="dialog">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-body">
+																	<div class="media">
+																		{if $item.image}
+																			<div class="media-left">
+																				<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='media-object' width='120'}</a>
+																			</div>
+																		{/if}
+																		<div class="media-body">
+																			<h4 class="media-heading">{lang key="cart_item_title_{$id}"}</h4>
+																			<p class="price"><span class="fa fa-tag"></span> {$item.cost} {$core.config.currency}</p>
+																			<p>{$description}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												{/if}
 											</div>
 										</div>
 

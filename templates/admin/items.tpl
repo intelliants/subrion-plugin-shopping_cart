@@ -1,5 +1,7 @@
 <form method="post" enctype="multipart/form-data" class="sap-form form-horizontal">
 	{preventCsrf}
+	<input type="hidden" name="language" id="js-active-language">
+
 	<div class="wrap-list">
 		<div class="wrap-group">
 			<div class="wrap-group-heading">
@@ -63,30 +65,32 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<ul class="nav nav-tabs">
-					{foreach $core.languages as $code => $language}
-						<li{if $language@iteration == 1} class="active"{/if}><a href="#tab-language-{$code}" data-toggle="tab" data-language="{$code}">{$language.title}</a></li>
-					{/foreach}
-				</ul>
+			<div class="wrap-group" id="js-content-fields">
+				<div class="row">
+					<ul class="nav nav-tabs">
+						{foreach $core.languages as $code => $language}
+							<li{if $language@iteration == 1} class="active"{/if}><a href="#tab-language-{$code}" data-toggle="tab" data-language="{$code}">{$language.title}</a></li>
+						{/foreach}
+					</ul>
 
-				<div class="tab-content">
-					{foreach $core.languages as $code => $language}
-						<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
-							<div class="row">
-								<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
-								<div class="col col-lg-6">
-									<input type="text" name="title[{$code}]" value="{if isset($item.title.$code)}{$item.title.$code|escape:'html'}{/if}">
+					<div class="tab-content">
+						{foreach $core.languages as $code => $language}
+							<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
+								<div class="row">
+									<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
+									<div class="col col-lg-10">
+										<input type="text" name="title[{$code}]" value="{if isset($item.title.$code)}{$item.title.$code|escape:'html'}{/if}">
+									</div>
+								</div>
+								<div class="row js-local-url-field">
+									<label class="col col-lg-2 control-label">{lang key='description'}</label>
+									<div class="col col-lg-10">
+										<textarea rows="30" name="description[{$code}]">{if isset($item.description.$code)}{$item.description.$code|escape:'html'}{/if}</textarea>
+									</div>
 								</div>
 							</div>
-							<div class="row js-local-url-field">
-								<label class="col col-lg-2 control-label">{lang key='description'}</label>
-								<div class="col col-lg-6">
-									<textarea rows="8" class="resizable" name="description[{$code}]">{if isset($item.description.$code)}{$item.description.$code|escape:'html'}{/if}</textarea>
-								</div>
-							</div>
-						</div>
-					{/foreach}
+						{/foreach}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -97,4 +101,4 @@
 	</div>
 </form>
 
-{ia_print_js files='_IA_URL_plugins/shopping_cart/js/admin/items'}
+{ia_print_js files='ckeditor/ckeditor, _IA_URL_plugins/shopping_cart/js/admin/items'}

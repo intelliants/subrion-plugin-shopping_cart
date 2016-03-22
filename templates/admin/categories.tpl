@@ -48,13 +48,13 @@
 							<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
 								<div class="row">
 									<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
-									<div class="col col-lg-6">
+									<div class="col col-lg-10">
 										<input type="text" name="title[{$code}]" value="{if isset($item.title.$code)}{$item.title.$code|escape:'html'}{/if}">
 									</div>
 								</div>
 								<div class="row js-local-url-field">
 									<label class="col col-lg-2 control-label">{lang key='description'}</label>
-									<div class="col col-lg-6">
+									<div class="col col-lg-10">
 										<textarea rows="8" class="resizable" name="description[{$code}]">{if isset($item.description.$code)}{$item.description.$code|escape:'html'}{/if}</textarea>
 									</div>
 								</div>

@@ -19,3 +19,17 @@ Ext.onReady(function()
 		intelli.cart_items.init();
 	}
 });
+
+$(function()
+{
+	// Page content language tabs
+	$('a[data-toggle="tab"]', '#js-content-fields').on('shown.bs.tab', function()
+	{
+		var lngCode = $(this).data('language');
+		CKEDITOR.instances['description[' + lngCode + ']']
+			|| intelli.ckeditor('description[' + lngCode + ']', {toolbar: 'Extended'});
+
+		$('#js-active-language').val(lngCode);
+	});
+	$('a[data-toggle="tab"]:first', '#js-content-fields').trigger('shown.bs.tab');
+});

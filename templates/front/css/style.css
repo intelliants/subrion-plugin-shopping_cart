@@ -73,11 +73,17 @@
 	margin-top: 10px;
 }
 
+.cart-more-info {
+	width: 100%;
+	margin-top: 5px;
+}
+
 .cart-btn-buy {
 	position: relative;
 	overflow: hidden;
-	margin: 15px 0 0 !important;
+	margin: 5px 0 0 !important;
 	display: block;
+	line-height: 24px;
 }
 
 .cart-btn-buy input {

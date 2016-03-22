@@ -4,8 +4,8 @@
 	<summary>Adds basic shopping cart functionality to manage products and sell them</summary>
 	<author>Intelliants LLC</author>
 	<contributor>Intelliants LLC</contributor>
-	<version>4.0.0</version>
-	<date>2016-03-14</date>
+	<version>4.0.1</version>
+	<date>2016-03-22</date>
 	<compatibility>4.0.5</compatibility>
 
 	<actions>
@@ -26,7 +26,7 @@
 		<page name="shopping_cart" url="order/" menus="inventory" order="2">Order</page>
 	</pages>
 
-	<phrases>shopping_cart
+	<phrases>
 		<phrase category="admin" key="shopping_cart">Shopping Cart</phrase>
 		<phrase category="admin" key="cart_categs">Cart categories</phrase>
 		<phrase category="admin" key="cart_categ_add">Add category</phrase>
@@ -57,6 +57,11 @@
 
 		<phrase category="common" key="cart_purchase">Cart purchase</phrase>
 	</phrases>
+
+	<configgroup name="shopping_cart">Shopping Cart</configgroup>
+
+	<config group="shopping_cart" name="shopping_cart_plugin" type="divider">General</config>
+	<config group="shopping_cart" name="shopping_cart_popup" type="radio" values="1,0" description="Enable popup box on Order page">1</config>
 
 	<install>
 		<sql>
