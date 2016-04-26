@@ -114,7 +114,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 			return false;
 		}
 
-		$entry['cost'] = preg_replace('/\D/', '', $data['cost']);
+		$entry['cost'] = isset($data['cost']) ? number_format($data['cost'], 2) : '0.00';
 		$entry['status'] = $data['status'];
 
 		if (isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name'])
