@@ -114,7 +114,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 			return false;
 		}
 
-		$entry['cost'] = isset($data['cost']) ? number_format($data['cost'], 2) : '0.00';
+		$entry['cost'] = isset($data['cost']) ? number_format((float)$data['cost'], 2) : '0.00';
 		$entry['status'] = $data['status'];
 
 		if (isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name'])

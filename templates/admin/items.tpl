@@ -64,33 +64,33 @@
 					</select>
 				</div>
 			</div>
+		</div>
 
-			<div class="wrap-group" id="js-content-fields">
-				<div class="row">
-					<ul class="nav nav-tabs">
-						{foreach $core.languages as $code => $language}
-							<li{if $language@iteration == 1} class="active"{/if}><a href="#tab-language-{$code}" data-toggle="tab" data-language="{$code}">{$language.title}</a></li>
-						{/foreach}
-					</ul>
+		<div class="wrap-group" id="js-content-fields">
+			<div class="row">
+				<ul class="nav nav-tabs">
+					{foreach $core.languages as $code => $language}
+						<li{if $language@iteration == 1} class="active"{/if}><a href="#tab-language-{$code}" data-toggle="tab" data-language="{$code}">{$language.title}</a></li>
+					{/foreach}
+				</ul>
 
-					<div class="tab-content">
-						{foreach $core.languages as $code => $language}
-							<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
-								<div class="row">
-									<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
-									<div class="col col-lg-10">
-										<input type="text" name="title[{$code}]" value="{if isset($item.title.$code)}{$item.title.$code|escape:'html'}{/if}">
-									</div>
-								</div>
-								<div class="row js-local-url-field">
-									<label class="col col-lg-2 control-label">{lang key='description'}</label>
-									<div class="col col-lg-10">
-										<textarea rows="30" name="description[{$code}]">{if isset($item.description.$code)}{$item.description.$code|escape:'html'}{/if}</textarea>
-									</div>
+				<div class="tab-content">
+					{foreach $core.languages as $code => $language}
+						<div class="tab-pane{if $language@first} active{/if}" id="tab-language-{$code}">
+							<div class="row">
+								<label class="col col-lg-2 control-label">{lang key='title'} {lang key='field_required'}</label>
+								<div class="col col-lg-10">
+									<input type="text" name="title[{$code}]" value="{if isset($item.title.$code)}{$item.title.$code|escape:'html'}{/if}">
 								</div>
 							</div>
-						{/foreach}
-					</div>
+							<div class="row js-local-url-field">
+								<label class="col col-lg-2 control-label">{lang key='description'}</label>
+								<div class="col col-lg-10">
+									<textarea rows="30" name="description[{$code}]">{if isset($item.description.$code)}{$item.description.$code|escape:'html'}{/if}</textarea>
+								</div>
+							</div>
+						</div>
+					{/foreach}
 				</div>
 			</div>
 		</div>
