@@ -59,7 +59,6 @@
 	</phrases>
 
 	<configgroup name="shopping_cart">Shopping Cart</configgroup>
-
 	<config group="shopping_cart" name="shopping_cart_plugin" type="divider">General</config>
 	<config group="shopping_cart" name="shopping_cart_popup" type="radio" values="1,0" description="Enable popup box on Order page">1</config>
 
