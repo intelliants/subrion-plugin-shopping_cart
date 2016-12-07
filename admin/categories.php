@@ -30,7 +30,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 	protected $_table = 'cart_categs';
 
-	protected $_helperName = 'cartcategories';
+	protected $_helperName = 'cartcategorie';
 
 	protected $_pluginName = 'shopping_cart';
 

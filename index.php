@@ -29,16 +29,12 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 	$iaView->title(iaLanguage::get('order'));
 	iaBreadcrumb::replaceEnd(iaLanguage::get('order'), IA_SELF);
 
-	$iaDb->setTable('cart_categs');
-	$all_items = $iaDb->assoc();
-	$iaDb->resetTable();
+	$all_items = $iaDb->assoc(iaDb::ALL_COLUMNS_SELECTION, iaDb::convertIds(iaCore::STATUS_ACTIVE, 'status'), 'cart_categs');
 
-	$iaDb->setTable('cart_items');
 	foreach ($all_items as $key => $categ)
 	{
-		$all_items[$key]['items'] = $iaDb->assoc(iaDb::ALL_COLUMNS_SELECTION, "`cid` = {$key}");
+		$all_items[$key]['items'] = $iaDb->assoc(iaDb::ALL_COLUMNS_SELECTION, "`cid` = {$key} && `status` = 'active'", 'cart_items');
 	}
-	$iaDb->resetTable();
 
 	$iaTransaction = $iaCore->factory('transaction', iaCore::CORE);
 

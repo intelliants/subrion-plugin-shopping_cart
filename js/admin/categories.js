@@ -9,6 +9,7 @@ Ext.onReady(function()
 				'selection',
 				{name: 'title', title: _t('title'), width: 200},
 				{name: 'description', title: _t('description'), width: 1},
+				'status',
 				'update',
 				'delete'
 			],
