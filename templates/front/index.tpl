@@ -51,7 +51,7 @@
 																	<div class="media">
 																		{if $item.image}
 																			<div class="media-left">
-																				<a href="{printImage imgfile=$item.image url=true fullimage=true}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='media-object' width='120'}</a>
+																				<a href="{printImage imgfile=$item.image url=true type='full'}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='media-object' width='120'}</a>
 																			</div>
 																		{/if}
 																		<div class="media-body">
