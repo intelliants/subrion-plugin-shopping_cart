@@ -36,10 +36,10 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 		$all_items[$key]['items'] = $iaDb->assoc(iaDb::ALL_COLUMNS_SELECTION, "`cid` = {$key} && `status` = 'active'", 'cart_items');
 	}
 
-	$iaTransaction = $iaCore->factory('transaction', iaCore::CORE);
-
 	if ($_POST)
 	{
+		$iaTransaction = $iaCore->factory('transaction');
+
 		$gateways = $iaTransaction->getPaymentGateways();
 
 		$transactionId = 0;

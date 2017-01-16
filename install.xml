@@ -27,7 +27,6 @@
 	</pages>
 
 	<phrases>
-		<phrase category="admin" key="shopping_cart">Shopping Cart</phrase>
 		<phrase category="admin" key="cart_categs">Cart categories</phrase>
 		<phrase category="admin" key="cart_categ_add">Add category</phrase>
 		<phrase category="admin" key="cart_categ_edit">Edit category</phrase>
@@ -41,10 +40,12 @@
 		<phrase category="admin" key="cart_categ_added">Cart category is added.</phrase>
 		<phrase category="admin" key="cart_categ_deleted">Cart category is removed.</phrase>
 		<phrase category="admin" key="cart_categs_deleted">Cart categories are removed.</phrase>
-		<phrase category="admin" key="error_cart_item_number_days">Wrong days number.</phrase>
-		<phrase category="admin" key="wrong_categ">Wrong Category selected.</phrase>
 		<phrase category="admin" key="cart_are_you_sure_to_delete_selected_categ">Are you sure to delete selected category?</phrase>
 		<phrase category="admin" key="cart_are_you_sure_to_delete_selected_categs">Are you sure to delete selected categories?</phrase>
+		<phrase category="admin" key="error_cart_item_number_days">Wrong days number.</phrase>
+		<phrase category="admin" key="products">products</phrase>
+		<phrase category="admin" key="shopping_cart">Shopping Cart</phrase>
+		<phrase category="admin" key="wrong_categ">Wrong Category selected.</phrase>
 
 		<phrase category="frontend" key="no_items">No items</phrase>
 		<phrase category="frontend" key="checkout">Checkout</phrase>
@@ -61,6 +62,10 @@
 	<configgroup name="shopping_cart">Shopping Cart</configgroup>
 	<config group="shopping_cart" name="shopping_cart_plugin" type="divider">General</config>
 	<config group="shopping_cart" name="shopping_cart_popup" type="radio" values="1,0" description="Enable popup box on Order page">1</config>
+
+	<hooks>
+		<hook name="adminDashboardStatistics" page_type="admin" pages="index"><![CDATA[$items['shopping_cart:cart_item'] = 'plugin';]]></hook>
+	</hooks>
 
 	<install>
 		<sql>

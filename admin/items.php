@@ -26,35 +26,31 @@
 
 class iaBackendController extends iaAbstractControllerPluginBackend
 {
-	protected $_name = 'shopping-cart/items';
+	protected $_name = 'items';
 
-	protected $_table = 'cart_items';
-	protected $_tableCategories = 'cart_categs';
-
-	protected $_helperName = 'cartitems';
+	protected $_helperName = 'cart_item';
 
 	protected $_pluginName = 'shopping_cart';
+
+	protected $_gridColumns = array('id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1);
 
 	protected $_phraseAddSuccess = 'cart_item_added';
 	protected $_phraseGridEntryDeleted = 'cart_item_deleted';
 	protected $_phraseGridEntriesDeleted = 'cart_items_deleted';
 
 
-	public function __construct()
+	public function init()
 	{
-		parent::__construct();
+		$this->_path = IA_ADMIN_URL . 'shopping-cart/' . $this->getName() . '/';
 		$this->_template = 'items';
 
-		$iaCart = $this->_iaCore->factoryPlugin($this->getPluginName(), iaCore::ADMIN, $this->_helperName);
-		$this->setHelper($iaCart);
+		$iaCartItem = $this->_iaCore->factoryPlugin($this->getPluginName(), iaCore::ADMIN, $this->_helperName);
+
+		$this->setHelper($iaCartItem);
+		$this->setTable($iaCartItem::getTable());
 	}
 
-	protected function _indexPage(&$iaView)
-	{
-		$iaView->grid('_IA_URL_plugins/' . $this->getPluginName() . '/js/admin/items');
-	}
-
-	protected function _setPageTitle(&$iaView)
+	protected function _setPageTitle(&$iaView, array $entryData, $action)
 	{
 		if (in_array($iaView->get('action'), array(iaCore::ACTION_ADD, iaCore::ACTION_EDIT)))
 		{
@@ -62,15 +58,20 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		}
 	}
 
-	protected function _assignValues(&$iaView, array &$entryData)
+	protected function _modifyGridResult(array &$entries)
 	{
-		$categs = $this->_iaDb->onefield('id', '', 0, 0, 'cart_categs');
-		$categs || $iaView->setMessages(iaLanguage::get('cart_error_no_categs'));
-		$iaView->assign('categs', $categs);
+		$currentLanguage = $this->_iaCore->iaView->language;
 
-		$id = $this->getEntryId();
-		$entryData['title'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$id}'", iaLanguage::getTable());
-		$entryData['description'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$id}'", iaLanguage::getTable());
+		$this->_iaDb->setTable(iaLanguage::getTable());
+		$titles = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_title_%') AND `code` = '$currentLanguage'");
+		$descriptions = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_description_%') AND `code` = '$currentLanguage'");
+		$this->_iaDb->resetTable();
+
+		foreach ($entries as &$entry)
+		{
+			$entry['title'] = isset($titles["cart_item_title_{$entry['id']}"]) ? $titles["cart_item_title_{$entry['id']}"] : iaLanguage::get('empty');
+			$entry['description'] = isset($descriptions["cart_item_description_{$entry['id']}"]) ? $descriptions["cart_item_description_{$entry['id']}"] : iaLanguage::get('empty');
+		}
 	}
 
 	protected function _entryDelete($entryId)
@@ -142,6 +143,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 	protected function _postSaveEntry(array &$entry, array $data, $action)
 	{
 		$id = $this->getEntryId();
+
 		foreach ($this->_iaCore->languages as $code => $title)
 		{
 			iaLanguage::addPhrase('cart_item_title_' . $id, $data['title'][$code], $code, $this->getPluginName());
@@ -149,24 +151,16 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		}
 	}
 
-	protected function _gridQuery($columns, $where, $order, $start, $limit)
+	protected function _assignValues(&$iaView, array &$entryData)
 	{
-		return parent::_gridQuery(array('id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1), $where, $order, $start, $limit);
-	}
+		$categs = $this->_iaDb->onefield(iaDb::ID_COLUMN_SELECTION, '', 0, 0, 'cart_categs');
+		$categs || $iaView->setMessages(iaLanguage::get('cart_error_no_categs'));
 
-	protected function _modifyGridResult(array &$entries)
-	{
-		$currentLanguage = $this->_iaCore->iaView->language;
+		$id = $this->getEntryId();
 
-		$this->_iaDb->setTable(iaLanguage::getTable());
-		$titles = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_title_%') AND `code` = '$currentLanguage'");
-		$descriptions = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_description_%') AND `code` = '$currentLanguage'");
-		$this->_iaDb->resetTable();
+		$entryData['title'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_title_{$id}'", iaLanguage::getTable());
+		$entryData['description'] = $this->_iaDb->keyvalue('`code`, `value`', "`key`='cart_item_description_{$id}'", iaLanguage::getTable());
 
-		foreach ($entries as &$entry)
-		{
-			$entry['title'] = isset($titles["cart_item_title_{$entry['id']}"]) ? $titles["cart_item_title_{$entry['id']}"] : iaLanguage::get('empty');
-			$entry['description'] = isset($descriptions["cart_item_description_{$entry['id']}"]) ? $descriptions["cart_item_description_{$entry['id']}"] : iaLanguage::get('empty');
-		}
+		$iaView->assign('categs', $categs);
 	}
 }
