@@ -8,7 +8,7 @@ Ext.onReady(function()
 				'selection',
 				{name: 'title', title: _t('title'), width: 1, sortable: false},
 				{name: 'description', title: _t('description'), width: 2, sortable: false},
-				{name: 'cost', title: _t('cost'), width: 70, editor: },
+				{name: 'cost', title: _t('cost'), width: 70, editor: 'text'},
 				'status',
 				'update',
 				'delete'
