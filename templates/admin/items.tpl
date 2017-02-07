@@ -30,14 +30,14 @@
 			<div class="row">
 				<label class="col col-lg-2 control-label" for="input-image">{lang key='image'}</label>
 				<div class="col col-lg-4">
-					{if isset($item.image) && $item.image}
+					{if !empty($item.image)}
 						<div class="input-group thumbnail thumbnail-single with-actions">
-							<a href="{printImage imgfile=$item.image type='full' url=true}" rel="ia_lightbox">
-								{printImage imgfile=$item.image}
+							<a href="{ia_image file=$item.image type='large' url=true}" rel="ia_lightbox">
+								{ia_image file=$item.image}
 							</a>
 
 							<div class="caption">
-								<a class="btn btn-small btn-danger" href="javascript:void(0);" title="{lang key='delete'}" onclick="return intelli.admin.removeFile('{$item.image}',this,'blog_entries','image','{$id}')"><i class="i-remove-sign"></i></a>
+								<a class="btn btn-small btn-danger js-cmd-delete-file" href="#" title="{lang key='delete'}" data-file="{$item.image}" data-item="cart_items" data-field="image" data-id="{$id}"><i class="i-remove-sign"></i></a>
 							</div>
 						</div>
 					{/if}

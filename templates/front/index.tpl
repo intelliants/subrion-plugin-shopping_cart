@@ -5,7 +5,7 @@
 				<div class="cart-categ">
 					<div class="cart-categ__heading clearfix">
 						{if $categ.image}
-							<div class="cart-categ__image">{printImage imgfile=$categ.image class='img-responsive'}</div>
+							<div class="cart-categ__image">{ia_image file=$categ.image type='thumbnail' class='img-responsive'}</div>
 						{/if}
 						<h3>{lang key="cart_categ_title_{$cid}"}</h3>
 						<p>{lang key="cart_categ_description_{$cid}"}</p>
@@ -24,7 +24,7 @@
 											<div class="cart-categ__items__item">
 												{if $item.image}
 													<a href="#" data-toggle="modal" data-target="#modal_{$id}">
-														{printImage imgfile=$item.image class='img-responsive'}
+														{ia_image file=$item.image type='thumbnail' class='img-responsive'}
 													</a>
 												{/if}
 												<h4>{lang key="cart_item_title_{$id}"}</h4>
@@ -43,7 +43,6 @@
 												{if $core.config.shopping_cart_popup}
 													<button type="button" class="btn btn-primary cart-more-info" data-toggle="modal" data-target="#modal_{$id}">{lang key='more'}</button>
 
-													<!-- Modal -->
 													<div class="modal fade" id="modal_{$id}" tabindex="-1" role="dialog">
 														<div class="modal-dialog" role="document">
 															<div class="modal-content">
@@ -51,7 +50,7 @@
 																	<div class="media">
 																		{if $item.image}
 																			<div class="media-left">
-																				<a href="{printImage imgfile=$item.image url=true type='full'}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{printImage imgfile=$item.image class='media-object' width='120'}</a>
+																				<a href="{ia_image file=$item.image url=true type='large'}" rel="ia_lightbox[{lang key="cart_item_title_{$id}"}]">{ia_image file=$item.image type='thumbnail' class='media-object' width=120}</a>
 																			</div>
 																		{/if}
 																		<div class="media-body">

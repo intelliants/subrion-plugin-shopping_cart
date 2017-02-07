@@ -85,6 +85,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		{
 			$this->addMessage('cart_incorrect_categ');
 		}
+
 		$entry['cid'] = $data['cid'];
 
 		iaUtil::loadUTF8Functions('ascii', 'validation', 'bad', 'utf8_to_ascii');
@@ -110,34 +111,30 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 			}
 		}
 
-		if ($this->getMessages())
-		{
-			return false;
-		}
-
 		$entry['cost'] = isset($data['cost']) ? number_format((float)$data['cost'], 2) : '0.00';
 		$entry['status'] = $data['status'];
 
-		if (isset($_FILES['image']['tmp_name']) && $_FILES['image']['tmp_name'])
+		if (!$this->getMessages())
 		{
-			$iaPicture = $this->_iaCore->factory('picture');
-
-			$info = array(
-				'image_width' => 1000,
-				'image_height' => 750,
-				'thumb_width' => 250,
-				'thumb_height' => 250,
-				'resize_mode' => iaPicture::CROP
-			);
-
-			if ($image = $iaPicture->processImage($_FILES['image'], iaUtil::getAccountDir(), iaUtil::generateToken(), $info))
+			if (isset($_FILES['image']['error']) && !$_FILES['image']['error'])
 			{
-				empty($entry['image']) || $iaPicture->delete($entry['image']); // already has an assigned image
-				$entry['image'] = $image;
+				try
+				{
+					$iaField = $this->_iaCore->factory('field');
+
+					$path = $iaField->uploadImage($_FILES['image'], 1000, 750, 250, 250, 'crop');
+
+					empty($entry['image']) || $iaField->deleteUploadedFile('image', $this->getTable(), $this->getEntryId(), $entry['image']);
+					$entry['image'] = $path;
+				}
+				catch (Exception $e)
+				{
+					$this->addMessage($e->getMessage(), false);
+				}
 			}
 		}
 
-		return true;
+		return !$this->getMessages();
 	}
 
 	protected function _postSaveEntry(array &$entry, array $data, $action)
