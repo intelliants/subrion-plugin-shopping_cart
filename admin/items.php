@@ -111,7 +111,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 			}
 		}
 
-		$entry['cost'] = isset($data['cost']) ? number_format((float)$data['cost'], 2) : '0.00';
+		$entry['cost'] = isset($data['cost']) ? (float)$data['cost'] : 0;
 		$entry['status'] = $data['status'];
 
 		if (!$this->getMessages())
