@@ -4,15 +4,15 @@
 	<summary>Adds basic shopping cart functionality to manage products and sell them</summary>
 	<author>Intelliants LLC</author>
 	<contributor>Intelliants LLC</contributor>
-	<version>4.0.1</version>
-	<date>2016-03-22</date>
-	<compatibility>4.0.5</compatibility>
+	<version>4.1.0</version>
+	<date>2017-02-09</date>
+	<compatibility>4.1.0</compatibility>
 
 	<actions>
-		<action name="cart_categs" url="shopping-cart/categories/" icon="list-2" order="1" pages="cart_items">Cart Categories</action>
-		<action name="cart_items" url="shopping-cart/items/" icon="list" order="2" pages="cart_categs">Cart Items</action>
-		<action name="cart_categ_add" url="shopping-cart/categories/add/" icon="folder-plus" order="3" pages="cart_categs">Add Category</action>
-		<action name="cart_item_add" url="shopping-cart/items/add/" icon="plus-alt" order="3" pages="cart_items">Add Item</action>
+		<action name="cart_categs" url="shopping-cart/categories/" icon="list-2" order="1" pages="cart_items"><![CDATA[]]></action>
+		<action name="cart_items" url="shopping-cart/items/" icon="list" order="2" pages="cart_categs"><![CDATA[]]></action>
+		<action name="cart_categ_add" url="shopping-cart/categories/add/" icon="folder-plus" order="3" pages="cart_categs"><![CDATA[]]></action>
+		<action name="cart_item_add" url="shopping-cart/items/add/" icon="plus-alt" order="3" pages="cart_items"><![CDATA[]]></action>
 	</actions>
 
 	<adminpages>
