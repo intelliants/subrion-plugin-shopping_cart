@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<plugin name="shopping_cart">
+<module type="plugin" name="shopping_cart">
 	<title>Shopping Cart</title>
 	<summary>Adds basic shopping cart functionality to manage products and sell them</summary>
 	<author>Intelliants LLC</author>
@@ -100,4 +100,4 @@ DROP TABLE `{prefix}cart_categs`, `{prefix}cart_items`;
 			]]>
 		</sql>
 	</uninstall>
-</plugin>
+</module>
