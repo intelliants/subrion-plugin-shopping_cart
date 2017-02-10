@@ -30,7 +30,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 	protected $_helperName = 'cart_item';
 
-	protected $_pluginName = 'shopping_cart';
+	protected $_moduleName = 'shopping_cart';
 
 	protected $_gridColumns = array('id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1);
 
@@ -44,7 +44,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		$this->_path = IA_ADMIN_URL . 'shopping-cart/' . $this->getName() . '/';
 		$this->_template = 'items';
 
-		$iaCartItem = $this->_iaCore->factoryPlugin($this->getPluginName(), iaCore::ADMIN, $this->_helperName);
+		$iaCartItem = $this->_iaCore->factoryPlugin($this->getModuleName(), iaCore::ADMIN, $this->_helperName);
 
 		$this->setHelper($iaCartItem);
 		$this->setTable($iaCartItem::getTable());
@@ -143,8 +143,8 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 		foreach ($this->_iaCore->languages as $code => $title)
 		{
-			iaLanguage::addPhrase('cart_item_title_' . $id, $data['title'][$code], $code, $this->getPluginName());
-			iaLanguage::addPhrase('cart_item_description_' . $id, $data['description'][$code], $code, $this->getPluginName());
+			iaLanguage::addPhrase('cart_item_title_' . $id, $data['title'][$code], $code, $this->getModuleName());
+			iaLanguage::addPhrase('cart_item_description_' . $id, $data['description'][$code], $code, $this->getModuleName());
 		}
 	}
 

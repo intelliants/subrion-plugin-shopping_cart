@@ -98,7 +98,7 @@
 		</div>
 	</form>
 
-	{ia_add_media files='js:_IA_URL_plugins/shopping_cart/js/frontend/order, css:_IA_URL_plugins/shopping_cart/templates/front/css/style'}
+	{ia_add_media files='js:_IA_URL_modules/shopping_cart/js/frontend/order, css:_IA_URL_modules/shopping_cart/templates/front/css/style'}
 {else}
 	<div class="alert alert-info">{lang key='no_items'}</div>
 {/if}

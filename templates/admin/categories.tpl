@@ -72,4 +72,4 @@
 	{include file='grid.tpl'}
 {/if}
 
-{ia_print_js files='_IA_URL_plugins/shopping_cart/js/admin/categories'}
+{ia_print_js files='_IA_URL_modules/shopping_cart/js/admin/categories'}

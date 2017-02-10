@@ -30,7 +30,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 	protected $_table = 'cart_categs';
 
-	protected $_pluginName = 'shopping_cart';
+	protected $_moduleName = 'shopping_cart';
 
 	protected $_gridColumns = array('id', 'order', 'image', 'status');
 
@@ -151,8 +151,8 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 		foreach ($this->_iaCore->languages as $code => $title)
 		{
-			iaLanguage::addPhrase('cart_categ_title_' . $id, $data['title'][$code], $code, $this->getPluginName());
-			iaLanguage::addPhrase('cart_categ_description_' . $id, $data['description'][$code], $code, $this->getPluginName());
+			iaLanguage::addPhrase('cart_categ_title_' . $id, $data['title'][$code], $code, $this->getModuleName());
+			iaLanguage::addPhrase('cart_categ_description_' . $id, $data['description'][$code], $code, $this->getModuleName());
 		}
 	}
 }

@@ -101,4 +101,4 @@
 	</div>
 </form>
 
-{ia_print_js files='ckeditor/ckeditor, _IA_URL_plugins/shopping_cart/js/admin/items'}
+{ia_print_js files='ckeditor/ckeditor, _IA_URL_modules/shopping_cart/js/admin/items'}
