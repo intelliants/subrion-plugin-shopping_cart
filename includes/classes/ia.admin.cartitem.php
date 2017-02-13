@@ -24,16 +24,16 @@
  *
  ******************************************************************************/
 
-class iaCartItem extends abstractPlugin
+class iaCartitem extends abstractModuleAdmin
 {
 	protected static $_table = 'cart_items';
 
 	public $dashboardStatistics = true;
 
 
-	public function getDashboardStatistics()
+	public function getDashboardStatistics($defaultProcessing = true)
 	{
-		$statuses = array(iaCore::STATUS_ACTIVE, iaCore::STATUS_INACTIVE);
+		$statuses = [iaCore::STATUS_ACTIVE, iaCore::STATUS_INACTIVE];
 		$rows = $this->iaDb->keyvalue('`status`, COUNT(*)', '1 GROUP BY `status`', self::getTable());
 		$total = 0;
 
@@ -43,14 +43,14 @@ class iaCartItem extends abstractPlugin
 			$total+= $rows[$status];
 		}
 
-		return array(
+		return [
 			'icon' => 'tags',
 			'item' => iaLanguage::get('products'),
 			'caption' => iaLanguage::get('shopping_cart'),
 			'rows' => $rows,
 			'total' => $total,
 			'url' => 'shopping-cart/items/'
-		);
+		];
 	}
 
 	public function delete($id)
@@ -60,7 +60,7 @@ class iaCartItem extends abstractPlugin
 		$this->iaDb->setTable(self::getTable());
 
 		// if item exists, then remove it
-		if ($row = $this->iaDb->row_bind(array('image'), '`id` = :id', array('id' => $id)))
+		if ($row = $this->iaDb->row_bind(['image'], '`id` = :id', ['id' => $id]))
 		{
 			$result = (bool)$this->iaDb->delete(iaDb::convertIds($id), self::getTable());
 
@@ -75,12 +75,12 @@ class iaCartItem extends abstractPlugin
 				iaLanguage::delete('cart_item_title_' . $id);
 				iaLanguage::delete('cart_item_description_' . $id);
 
-				$this->iaCore->factory('log')->write(iaLog::ACTION_DELETE, array(
+				$this->iaCore->factory('log')->write(iaLog::ACTION_DELETE, [
 					'module' => 'blog',
 					'item' => 'product',
 					'name' => $row['title'],
 					'id' => (int)$id
-				));
+				]);
 			}
 		}
 

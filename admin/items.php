@@ -24,15 +24,15 @@
  *
  ******************************************************************************/
 
-class iaBackendController extends iaAbstractControllerPluginBackend
+class iaBackendController extends iaAbstractControllerModuleBackend
 {
 	protected $_name = 'items';
 
-	protected $_helperName = 'cart_item';
+	protected $_helperName = 'cartitem';
 
 	protected $_moduleName = 'shopping_cart';
 
-	protected $_gridColumns = array('id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1);
+	protected $_gridColumns = ['id', 'order', 'cost', 'days', 'status', 'update' => 1, 'delete' => 1];
 
 	protected $_phraseAddSuccess = 'cart_item_added';
 	protected $_phraseGridEntryDeleted = 'cart_item_deleted';
@@ -52,7 +52,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 	protected function _setPageTitle(&$iaView, array $entryData, $action)
 	{
-		if (in_array($iaView->get('action'), array(iaCore::ACTION_ADD, iaCore::ACTION_EDIT)))
+		if (in_array($iaView->get('action'), [iaCore::ACTION_ADD, iaCore::ACTION_EDIT]))
 		{
 			$iaView->title(iaLanguage::get('cart_item_' . $iaView->get('action')));
 		}
@@ -63,8 +63,8 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		$currentLanguage = $this->_iaCore->iaView->language;
 
 		$this->_iaDb->setTable(iaLanguage::getTable());
-		$titles = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_title_%') AND `code` = '$currentLanguage'");
-		$descriptions = $this->_iaDb->keyvalue(array('key', 'value'), "`key` LIKE('cart_item_description_%') AND `code` = '$currentLanguage'");
+		$titles = $this->_iaDb->keyvalue(['key', 'value'], "`key` LIKE('cart_item_title_%') AND `code` = '$currentLanguage'");
+		$descriptions = $this->_iaDb->keyvalue(['key', 'value'], "`key` LIKE('cart_item_description_%') AND `code` = '$currentLanguage'");
 		$this->_iaDb->resetTable();
 
 		foreach ($entries as &$entry)
@@ -90,7 +90,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 
 		iaUtil::loadUTF8Functions('ascii', 'validation', 'bad', 'utf8_to_ascii');
 
-		$lang = array();
+		$lang = [];
 		$lang['title'] = $data['title'];
 		$lang['description'] = $data['description'];
 
@@ -98,7 +98,7 @@ class iaBackendController extends iaAbstractControllerPluginBackend
 		{
 			if (empty($lang['title'][$code]))
 			{
-				$this->addMessage(iaLanguage::getf('error_lang_title', array('lang' => $language['title'])), false);
+				$this->addMessage(iaLanguage::getf('error_lang_title', ['lang' => $language['title']]), false);
 			}
 			elseif (!utf8_is_valid($lang['title'][$code]))
 			{

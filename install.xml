@@ -64,7 +64,7 @@
 	<config group="shopping_cart" name="shopping_cart_popup" type="radio" values="1,0" description="Enable popup box on Order page">1</config>
 
 	<hooks>
-		<hook name="adminDashboardStatistics" page_type="admin" pages="index"><![CDATA[$items['shopping_cart:cart_item'] = 'plugin';]]></hook>
+		<hook name="adminDashboardStatistics" page_type="admin" pages="index"><![CDATA[$items['shopping_cart:cartitem'] = 'plugin';]]></hook>
 	</hooks>
 
 	<install>

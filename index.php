@@ -53,8 +53,8 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 		iaBreadcrumb::replaceEnd(iaLanguage::get('products_in_cart'), IA_SELF);
 		$iaView->assign('checkout', 1);
 
-		$selected_products = array();
-		$title = array();
+		$selected_products = [];
+		$title = [];
 
 		foreach ($_POST['cart_items'] as $categ => $product)
 		{
@@ -67,7 +67,7 @@ if (iaView::REQUEST_HTML == $iaView->getRequestType())
 
 		$title = implode(', ', $title);
 
-		$paymentId = $iaTransaction->create($title, $_POST['total'], 'cart_purchase', array(), IA_URL . 'order/', 0, true);
+		$paymentId = $iaTransaction->create($title, $_POST['total'], 'cart_purchase', [], IA_URL . 'order/', 0, true);
 
 		iaUtil::go_to(IA_URL . 'pay' . IA_URL_DELIMITER . $paymentId . IA_URL_DELIMITER);
 	}
